@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		85376FAE2178399500D5BE18 /* Charts.h in Headers */ = {isa = PBXBuildFile; fileRef = 85376FAC2178399500D5BE18 /* Charts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		85376FD921783A0800D5BE18 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85376FD721783A0800D5BE18 /* LineChartView.swift */; };
+		85376FDA21783A0800D5BE18 /* LineChartDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85376FD821783A0800D5BE18 /* LineChartDataSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		85376FA92178399500D5BE18 /* Charts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Charts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85376FAC2178399500D5BE18 /* Charts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Charts.h; sourceTree = "<group>"; };
 		85376FAD2178399500D5BE18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85376FD721783A0800D5BE18 /* LineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
+		85376FD821783A0800D5BE18 /* LineChartDataSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartDataSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,10 +50,20 @@
 		85376FAB2178399500D5BE18 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
+				85376FD6217839E900D5BE18 /* LineChart */,
 				85376FAC2178399500D5BE18 /* Charts.h */,
 				85376FAD2178399500D5BE18 /* Info.plist */,
 			);
 			path = Charts;
+			sourceTree = "<group>";
+		};
+		85376FD6217839E900D5BE18 /* LineChart */ = {
+			isa = PBXGroup;
+			children = (
+				85376FD821783A0800D5BE18 /* LineChartDataSet.swift */,
+				85376FD721783A0800D5BE18 /* LineChartView.swift */,
+			);
+			path = LineChart;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,6 +109,7 @@
 				TargetAttributes = {
 					85376FA82178399500D5BE18 = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -104,6 +119,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 85376F9F2178399500D5BE18;
 			productRefGroup = 85376FAA2178399500D5BE18 /* Products */;
@@ -130,6 +146,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85376FD921783A0800D5BE18 /* LineChartView.swift in Sources */,
+				85376FDA21783A0800D5BE18 /* LineChartDataSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +279,7 @@
 		85376FB22178399500D5BE18 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -278,6 +297,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Simon.Charts;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -286,6 +306,7 @@
 		85376FB32178399500D5BE18 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
