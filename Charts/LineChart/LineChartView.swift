@@ -24,10 +24,13 @@ open class LineChartView: UIView {
     private var chartIsDraw: Bool = false
     private var iconsSize: CGFloat = 7
     private var basicLineOffset: CGFloat = -200
+    private var maxAndMinInterval: Double = 10
     private var contentViewWidthValue: CGFloat = 0 {
         didSet {
             if contentViewWidthConstraint != nil {
-                contentViewWidthConstraint.constant = self.contentViewWidthValue
+                DispatchQueue.main.async {
+                    self.contentViewWidthConstraint.constant = self.contentViewWidthValue
+                }
             }
         }
     }
@@ -52,7 +55,7 @@ open class LineChartView: UIView {
         case y
     }
     
-//    var dataAverage: Double!
+    //    var dataAverage: Double!
     
     
     
@@ -80,13 +83,18 @@ open class LineChartView: UIView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(scrollView)
-        let topConstraint = NSLayoutConstraint(item: self.scrollView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: 0)
-        scrollViewLeftConstraint = NSLayoutConstraint(item: self.scrollView, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: 40)
+        //        DispatchQueue.global().async {
         
-        let rightConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.scrollView, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0)
-        let bottomConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.scrollView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: 0)
-        self.addConstraints([topConstraint, bottomConstraint, scrollViewLeftConstraint, rightConstraint])
+        DispatchQueue.main.async {
+            self.addSubview(self.scrollView)
+            let topConstraint = NSLayoutConstraint(item: self.scrollView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: 0)
+            self.scrollViewLeftConstraint = NSLayoutConstraint(item: self.scrollView, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: 40)
+            
+            let rightConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.scrollView, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0)
+            let bottomConstraint = NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.scrollView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: 0)
+            self.addConstraints([topConstraint, bottomConstraint, self.scrollViewLeftConstraint, rightConstraint])
+        }
+        //        }
         self.scrollView.clipsToBounds = false
         addContentView()
         self.scrollView.clipsToBounds = true
@@ -95,23 +103,29 @@ open class LineChartView: UIView {
     
     private func addContentView() {
         
-        contentView = UIView()
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = UIColor.clear
-        scrollView.addSubview(contentView)
+        self.contentView = UIView()
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.backgroundColor = UIColor.clear
         
-        let topConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: 0)
         
-        contentViewBottomConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 50)
-        
-        let leftConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: 0)
-        
-        let rightConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: 0)
-        
-        let verticallyConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-        //
-        contentViewWidthConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: contentViewWidthValue)
-        NSLayoutConstraint.activate([topConstraint, contentViewBottomConstraint, leftConstraint, rightConstraint, verticallyConstraint, contentViewWidthConstraint])
+        DispatchQueue.main.async {
+            self.scrollView.addSubview(self.contentView)
+            
+            let topConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: 0)
+            
+            self.contentViewBottomConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 50)
+            
+            let leftConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: 0)
+            
+            let rightConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: 0)
+            
+            let verticallyConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.contentView.superview, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
+            //
+            self.contentViewWidthConstraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: self.contentViewWidthValue)
+            
+            NSLayoutConstraint.activate([topConstraint, self.contentViewBottomConstraint, leftConstraint, rightConstraint, verticallyConstraint, self.contentViewWidthConstraint])
+            
+        }
         //        innerView.addConstraints([topConstraint, bottomConstraint, leftConstraint, rightConstraint])
         
         print("contentView Finish")
@@ -121,22 +135,24 @@ open class LineChartView: UIView {
     
     private func dataProcessing() {
         
-//        self.dataLog = []
-//        for i in self.data {
-//            self.dataLog.append(i.data)
-//        }
+        //        self.dataLog = []
+        //        for i in self.data {
+        //            self.dataLog.append(i.data)
+        //        }
         
         
         if contentViewWidthConstraint != nil {
-            if data.count >= 1 {
-                self.contentViewWidthValue = {
-                    let v = CGFloat(100 + (self.data[0].data.count * self.spacingBetweenPoints))
-                    if v < self.bounds.size.width {
-                        return self.bounds.size.width
-                    }else {
-                        return v
-                    }
-                }()
+            DispatchQueue.main.async {
+                if self.data.count >= 1 {
+                    self.contentViewWidthValue = {
+                        let v = CGFloat(100 + (self.data[0].data.count * self.spacingBetweenPoints))
+                        if v < self.bounds.size.width {
+                            return self.bounds.size.width
+                        }else {
+                            return v
+                        }
+                    }()
+                }
             }
         }
         
@@ -149,14 +165,18 @@ open class LineChartView: UIView {
             }
             var max = d.max() ?? 100
             var min = d.min() ?? 0
-            if max.truncatingRemainder(dividingBy: 10) != 0 {
-                max = Double((Int(max / 10) * 10) + 10)
-            }
-            if min.truncatingRemainder(dividingBy: 10) != 0 {
-                if min < 0 {
-                    min = min - min.truncatingRemainder(dividingBy: 10) - 10
+            if max.truncatingRemainder(dividingBy: maxAndMinInterval) != 0 {
+                if max < 0 {
+                    max = Double(max - max.truncatingRemainder(dividingBy: maxAndMinInterval))
                 }else {
-                    min = Double(min - min.truncatingRemainder(dividingBy: 10))
+                    max = Double(max - max.truncatingRemainder(dividingBy: maxAndMinInterval) + maxAndMinInterval)
+                }
+            }
+            if min.truncatingRemainder(dividingBy: maxAndMinInterval) != 0 {
+                if min < 0 {
+                    min = min - min.truncatingRemainder(dividingBy: maxAndMinInterval) - maxAndMinInterval
+                }else {
+                    min = Double(min - min.truncatingRemainder(dividingBy: maxAndMinInterval))
                 }
             }
             LineChartView.maximum = max
@@ -219,7 +239,6 @@ open class LineChartView: UIView {
         let max = LineChartView.maximum
         let offset = 0.05
         func drawYScale() {
-            
             for i in 0...self.yAxisScaleNumber {
                 let value = min + ((max - min) / Double(self.yAxisScaleNumber)) * Double(i)
                 
