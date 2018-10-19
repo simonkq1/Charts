@@ -135,11 +135,6 @@ open class LineChartView: UIView {
     
     private func dataProcessing() {
         
-        //        self.dataLog = []
-        //        for i in self.data {
-        //            self.dataLog.append(i.data)
-        //        }
-        
         
         if contentViewWidthConstraint != nil {
             DispatchQueue.main.async {
@@ -159,9 +154,7 @@ open class LineChartView: UIView {
         var d = [Double]()
         if self.data.count != 0{
             for i in self.data {
-                for ii: Double in i.data {
-                    d.append(ii)
-                }
+                d += i.data
             }
             var max = d.max() ?? 100
             var min = d.min() ?? 0
